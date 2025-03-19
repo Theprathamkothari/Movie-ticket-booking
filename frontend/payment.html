@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(to bottom, #e0f7fa, #ffffff);
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #00796b; 
+            color: #ffffff; 
+            padding: 20px;
+            text-align: center;
+        }
+        nav {
+            margin: 20px 0;
+        }
+        nav a {
+            margin: 0 15px;
+            color: white;
+            text-decoration: none;
+        }
+        footer {
+            text-align: center;
+            padding: 10px;
+            background-color: #00796b; 
+            color: white;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+        }
+        #paymentContainer {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 20px;
+            padding: 20px;
+        }
+        .payment-option {
+            border: 1px solid #00796b;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 10px;
+            text-align: center;
+            width: 200px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s;
+            background-color: #ffffff;
+        }
+        .payment-option:hover {
+            transform: translateY(-5px);
+        }
+        .wallet-option {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .wallet-balance {
+            font-weight: bold;
+            color: #4CAF50;
+        }
+        button {
+            background: linear-gradient(90deg, #00796b, #004d40);
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+            width: 100%;
+            margin-top: 10px;
+        }
+        button:hover {
+            background: linear-gradient(90deg, #004d40, #00796b);
+        }
+        #confirmationMessage {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+        }
+        #confirmationMessage h2 {
+            color: #00796b;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Payment</h1>
+    </header>
+    <div id="walletBalance" style="position: absolute; top: 20px; right: 20px; font-size: 18px; color: #333;">Wallet: ₹100</div>
+    <button onclick="window.location.href='index.html'" style="width: 100%; padding: 10px; background: linear-gradient(90deg, #A3C1DA, #8AB8E1); color: white; border: none; border-radius: 5px; cursor: pointer; transition: background 0.3s; margin-top: 20px;">Home</button>
+    <div id="paymentContainer">
+        <div class="payment-option">
+            <h3>Credit Card</h3>
+            <button>Pay with Credit Card</button>
+        </div>
+        <div class="payment-option">
+            <h3>PayPal</h3>
+            <button>Pay with PayPal</button>
+        </div>
+        <div class="payment-option">
+            <h3>Google Pay</h3>
+            <button>Pay with Google Pay</button>
+        </div>
+        <div class="payment-option wallet-option">
+            <h3>Wallet</h3>
+            <span class="wallet-balance">₹100</span>
+            <button id="walletButton">Use Wallet</button>
+        </div>
+    </div>
+    <button id="generateTicket" style="display:none; width: 100%; padding: 10px; background: linear-gradient(90deg, #A3C1DA, #8AB8E1); color: white; border: none; border-radius: 5px; cursor: pointer; transition: background 0.3s; margin-top: 20px;">Generate Ticket</button>
+    <div id="confirmationMessage">
+        <h2>✅ Booking Confirmed!</h2>
+        <p>🎟️ Movie: <span id="movieName"></span></p>
+        <p>🕒 Timing: <span id="movieTiming"></span></p>
+        <p>💺 Seats: <span id="selectedSeats"></span></p>
+        <p>💰 Amount Deducted: <span id="deductedAmount"></span></p>
+        <p>Remaining Balance: <span id="remainingBalance"></span></p>
+    </div>
+    <footer>
+        <p>Your payment is secure and protected.</p>
+        <p>If you need assistance, please contact our support team.</p>
+    </footer>
+    <script>
+        const ticketPrice = 100; // Example ticket price
+        document.getElementById('walletButton').addEventListener('click', function() {
+            const walletBalance = parseInt(document.querySelector('.wallet-balance').innerText.replace('₹', ''));
+            if (walletBalance >= ticketPrice) {
+                document.getElementById('confirmationMessage').style.display = 'block';
+                document.getElementById('movieName').innerText = 'Inception'; // Example movie name
+                document.getElementById('movieTiming').innerText = '7:00 PM'; // Example timing
+                document.getElementById('selectedSeats').innerText = 'A1, A2'; // Example seats
+                document.getElementById('deductedAmount').innerText = '₹' + ticketPrice;
+                document.getElementById('remainingBalance').innerText = '₹' + (walletBalance - ticketPrice);
+                alert('Booking confirmed!\nMovie: Inception\nTiming: 7:00 PM\nSeats: A1, A2\nAmount Deducted: ₹' + ticketPrice + '\nRemaining Balance: ₹' + (walletBalance - ticketPrice));
+
+                // Show generate ticket button
+                document.getElementById('generateTicket').style.display = 'block';
+            } else {
+                alert('Insufficient balance!');
+            }
+        });
+
+        document.getElementById('generateTicket').addEventListener('click', function() {
+            const ticket = `\n\n--- Ticket ---\nMovie: Inception\nTiming: 7:00 PM\nSeats: A1, A2\nAmount: ₹${ticketPrice}\n-----------------`;
+            alert(ticket); // Display ticket in alert or handle as needed
+        });
+    </script>
+</body>
+</html>

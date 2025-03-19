@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select Seats</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f9f9f9;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        #screenIndicator {
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+        #seatingChart {
+            display: grid;
+            grid-template-columns: repeat(10, 1fr);
+            gap: 10px;
+            justify-items: center;
+            padding: 20px;
+        }
+        .seat {
+            width: 40px;
+            height: 40px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+            position: relative;
+        }
+        .seat.available {
+            background: linear-gradient(90deg, #4CAF50, #66BB6A);
+        }
+        .seat.booked {
+            background: linear-gradient(90deg, #ef5350, #e57373);
+        }
+        .seat.selected {
+            background: linear-gradient(90deg, #FFD700, #FFEA00);
+        }
+        .seat:hover {
+            transform: scale(1.1);
+        }
+        .seat::after {
+            content: attr(title);
+            position: absolute;
+            top: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 5px;
+            border-radius: 5px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .seat:hover::after {
+            opacity: 1;
+        }
+        #legend {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .legend-item {
+            margin: 0 15px;
+            display: flex;
+            align-items: center;
+        }
+        .legend-box {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            margin-right: 5px;
+        }
+        #confirmSeats {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(90deg, #A3C1DA, #8AB8E1);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background 0.3s;
+            margin-top: 20px;
+        }
+        #confirmSeats:hover {
+            background: linear-gradient(90deg, #8AB8E1, #A3C1DA);
+        }
+    </style>
+</head>
+<body>
+    <div id="walletBalance" style="position: absolute; top: 20px; right: 20px; font-size: 18px; color: #333;"><p>Price: <span id="ticketPrice">₹100</span></p></div>
+    <header>
+        <h1>Select Your Seats</h1>
+    </header>
+    <main>
+        <h1>Select Your Seats</h1>
+        <h2 id="selectedMovie"></h2>
+        <div id="screenIndicator">Screen This Way</div>
+        <div id="seatingChart">
+            <!-- Display all available seats here -->
+            <div class="seat available" title="A1">A1</div>
+            <div class="seat available" title="A2">A2</div>
+            <div class="seat booked" title="A3">A3</div>
+            <div class="seat available" title="A4">A4</div>
+            <div class="seat selected" title="A5">A5</div>
+            <div class="seat available" title="A6">A6</div>
+            <div class="seat booked" title="A7">A7</div>
+            <div class="seat available" title="A8">A8</div>
+            <div class="seat available" title="A9">A9</div>
+            <div class="seat available" title="A10">A10</div>
+            <div class="seat available" title="B1">B1</div>
+            <div class="seat available" title="B2">B2</div>
+            <div class="seat available" title="B3">B3</div>
+            <div class="seat available" title="B4">B4</div>
+            <div class="seat available" title="B5">B5</div>
+            <div class="seat available" title="B6">B6</div>
+            <div class="seat available" title="B7">B7</div>
+            <div class="seat available" title="B8">B8</div>
+            <div class="seat available" title="B9">B9</div>
+            <div class="seat available" title="B10">B10</div>
+        </div>
+        <div id="legend">
+            <div class="legend-item"><div class="legend-box" style="background-color: #4CAF50;"></div>Available</div>
+            <div class="legend-item"><div class="legend-box" style="background-color: #ef5350;"></div>Booked</div>
+            <div class="legend-item"><div class="legend-box" style="background-color: #FFD700;"></div>Selected</div>
+        </div>
+        <button id="confirmSeats">Confirm Seats</button>
+    </main>
+    <footer>
+        <p>&copy; 2025 Movie Ticket Booking. All rights reserved.</p>
+    </footer>
+    <script>
+        // Get URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const movie = urlParams.get('movie');
+        const timing = urlParams.get('timing');
+        const seats = urlParams.get('seats');
+
+        // Redirect to the main page if parameters are missing
+        if (!movie || !timing || !seats) {
+            alert('Invalid access. Redirecting to the main page.');
+            window.location.href = 'index.html';
+        }
+
+        // Display selected movie and timing
+        document.getElementById('selectedMovie').insertAdjacentHTML('afterbegin', `Selected Movie: ${movie}, Timing: ${timing}`);
+
+        let selectedCount = 0;
+        const maxSeats = 5; // Maximum number of seats that can be selected
+
+        // Add event listener to each seat
+        const seatsElements = document.querySelectorAll('.seat');
+        seatsElements.forEach(seat => {
+            seat.addEventListener('click', function() {
+                if (this.classList.contains('booked')) return;
+                if (this.classList.contains('selected')) {
+                    this.classList.remove('selected');
+                    selectedCount--;
+                } else if (selectedCount < maxSeats) {
+                    this.classList.add('selected');
+                    selectedCount++;
+                }
+            });
+        });
+
+        // Confirm seats button functionality
+        document.getElementById('confirmSeats').addEventListener('click', function() {
+            const selectedSeats = document.querySelectorAll('.seat.selected');
+            if (selectedSeats.length > 0) {
+                alert(`You have selected ${selectedSeats.length} seats.`);
+                // Redirect to payment page
+                window.location.href = 'payment.html';
+            } else {
+                alert('Please select at least one seat.');
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(to right, #e0f7fa, #ffffff);
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .login-container {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            padding: 30px;
+            width: 300px;
+            max-width: 90%;
+        }
+        h2 {
+            text-align: center;
+        }
+        input {
+            width: 85%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #A3C1DA;
+            border-radius: 5px;
+            position: relative;
+        }
+        input[type="text"], input[type="password"] {
+            padding-left: 30px;
+        }
+        .input-icon {
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            pointer-events: none;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background: linear-gradient(90deg, #A3C1DA, #8AB8E1);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+            margin-top: 10px;
+        }
+        button:hover {
+            background: linear-gradient(90deg, #8AB8E1, #A3C1DA);
+        }
+        .links {
+            text-align: center;
+            margin-top: 10px;
+        }
+        .links a {
+            color: #00796b;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        .links a:hover {
+            color: #004d40;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h2>Login</h2>
+        <form id="loginForm">
+            <input type="text" id="username" name="username" placeholder="Username" required>
+            <input type="password" id="password" name="password" placeholder="Password" required>
+            <button type="submit">Login</button>
+            <div class="links">
+                <a href="#">Forgot Password?</a>
+                <br />
+                <a href="#">Create Account</a>
+            </div>
+        </form>
+    </div>
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            alert('Logged in successfully!');
+            document.querySelector('button[type="submit"]').style.display = 'none';  // Hide login button
+            window.location.href = 'index.html';
+        });
+    </script>
+</body>
+</html>

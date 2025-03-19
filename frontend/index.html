@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Ticket Booking</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Sidebar Styles */
+        #sidebar {
+            position: fixed;
+            top: 0;
+            left: -250px;
+            width: 250px;
+            height: 100%;
+            background-color: #fff;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5);
+            transition: left 0.3s ease;
+            z-index: 1000;
+        }
+        #sidebar.open {
+            left: 0;
+        }
+        #sidebar ul {
+            list-style: none;
+            padding: 20px;
+        }
+        #sidebar ul li {
+            margin: 15px 0;
+        }
+        #sidebar ul li a {
+            text-decoration: none;
+            color: #333;
+            font-size: 18px;
+        }
+        /* Main Content Styles */
+        #mainContent {
+            padding: 20px;
+        }
+        #movieOptions {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        .movie {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            padding: 15px;
+            text-align: center;
+            transition: transform 0.2s;
+        }
+        .movie:hover {
+            transform: scale(1.05);
+        }
+        button {
+            background: linear-gradient(90deg, #A3C1DA, #8AB8E1);
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background: linear-gradient(90deg, #8AB8E1, #A3C1DA);
+        }
+        .movie-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+        .movie img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 10px 10px 0 0;
+        }
+        .movie h3 {
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        .movie p {
+            font-size: 16px;
+            color: #666;
+        }
+        .timing-dropdown {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: none;
+            border-radius: 10px;
+        }
+        .selectSeat {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+        .selectSeat:hover {
+            background-color: #3e8e41;
+        }
+    </style>
+</head>
+<body>
+    <div id="walletBalance" style="position: absolute; top: 20px; right: 20px; font-size: 18px; color: #333;">Wallet: ₹100</div>
+    <header>
+        <h1>Movie Ticket Booking</h1>
+    </header>
+    <main>
+        <h2>Select Date:</h2>
+        <p>Select a date for your movie:</p>
+        <div style="display: flex; align-items: center;">
+            <input type="date" id="movieDate" style="flex: 0 0 150px; padding: 10px; border: 1px solid #A3C1DA; border-radius: 5px;">
+            <img src="calendar-icon.png" alt="Calendar" style="width: 30px; height: 30px; margin-left: 10px; cursor: pointer;">
+        </div>
+        <h2 style="margin-top: 20px;">Select a Movie:</h2>
+        <div id="movieOptions" class="movie-grid">
+            <div class="movie" data-price="10">
+                <img src="shawshank.jpg" alt="The Shawshank Redemption" />
+                <h3>The Shawshank Redemption</h3>
+                <p>Price: <span id="ticketPrice">₹100</span></p>
+                <label for="timings1">Select Timing:</label>
+                <select id="timings1" class="timing-dropdown">
+                    <option value="10:00 AM">10:00 AM</option>
+                    <option value="1:00 PM">1:00 PM</option>
+                </select>
+                <button type="button" class="selectSeat">Select Seat</button>
+            </div>
+            <div class="movie" data-price="12">
+                <img src="thegodfather.jpeg" alt="The Godfather" />
+                <h3>The Godfather</h3>
+                <p>Price: <span id="ticketPrice">₹100</span></p>
+                <label for="timings2">Select Timing:</label>
+                <select id="timings2" class="timing-dropdown">
+                    <option value="11:00 AM">11:00 AM</option>
+                    <option value="2:00 PM">2:00 PM</option>
+                </select>
+                <button type="button" class="selectSeat">Select Seat</button>
+            </div>
+            <div class="movie" data-price="15">
+                <img src="darkknight.jpeg" alt="The Dark Knight" />
+                <h3>The Dark Knight</h3>
+                <p>Price: <span id="ticketPrice">₹100</span></p>
+                <label for="timings3">Select Timing:</label>
+                <select id="timings3" class="timing-dropdown">
+                    <option value="12:00 PM">12:00 PM</option>
+                    <option value="3:00 PM">3:00 PM</option>
+                </select>
+                <button type="button" class="selectSeat">Select Seat</button>
+            </div>
+            <div class="movie" data-price="8">
+                <img src="inception.jpeg" alt="Inception" />
+                <h3>Inception</h3>
+                <p>Price: <span id="ticketPrice">₹100</span></p>
+                <label for="timings4">Select Timing:</label>
+                <select id="timings4" class="timing-dropdown">
+                    <option value="10:30 AM">10:30 AM</option>
+                    <option value="1:30 PM">1:30 PM</option>
+                </select>
+                <button type="button" class="selectSeat">Select Seat</button>
+            </div>
+            <div class="movie" data-price="9">
+                <img src="inter.jpeg" alt="Interstellar" />
+                <h3>Interstellar</h3>
+                <p>Price: <span id="ticketPrice">₹100</span></p>
+                <label for="timings5">Select Timing:</label>
+                <select id="timings5" class="timing-dropdown">
+                    <option value="11:15 AM">11:15 AM</option>
+                    <option value="2:15 PM">2:15 PM</option>
+                </select>
+                <button type="button" class="selectSeat">Select Seat</button>
+            </div>
+            <div class="movie" data-price="11">
+                <img src="matrix.jpeg" alt="The Matrix" />
+                <h3>The Matrix</h3>
+                <p>Price: <span id="ticketPrice">₹100</span></p>
+                <label for="timings6">Select Timing:</label>
+                <select id="timings6" class="timing-dropdown">
+                    <option value="12:30 PM">12:30 PM</option>
+                    <option value="3:30 PM">3:30 PM</option>
+                </select>
+                <button type="button" class="selectSeat">Select Seat</button>
+            </div>
+        </div>
+    </main>
+    <script>
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('open');
+        }
+        document.addEventListener('click', function(event) {
+            const sidebar = document.getElementById('sidebar');
+            if (!sidebar.contains(event.target) && !document.getElementById('toggleSidebar').contains(event.target)) {
+                sidebar.classList.remove('open');
+            }
+        });
+    </script>
+    <script>
+        const selectSeatButtons = document.querySelectorAll('.selectSeat');
+        selectSeatButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const selectedMovie = this.parentElement.querySelector('h3').innerText;
+                const selectedTiming = this.parentElement.querySelector('select').value;
+                window.location.href = `seating.html?movie=${encodeURIComponent(selectedMovie)}&timing=${encodeURIComponent(selectedTiming)}&seats=5`;
+            });
+        });
+    </script>
+</body>
+</html>
